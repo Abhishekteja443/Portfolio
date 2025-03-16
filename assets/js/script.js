@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log("Sending data:", formData); // Debugging step
 
     // ✅ Replace this URL with your correct Google Apps Script URL
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbz94ktr7FHVb1ciUztuQ9zhjXjrUSxypk6rhi_RQprdfSNle8cBJyeUltGak2pFedpu/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyKb1OArIa8NonlAWKY0KEVR5MPVs8KqOPmhE_T2F9rSWLhYXeDUmQLZNw_b3UOVOg0/exec';
 
     // Send data to Google Apps Script
     fetch(scriptURL, {
