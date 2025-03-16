@@ -220,6 +220,18 @@ document.addEventListener('DOMContentLoaded', function() {
         'Content-Type': 'application/json'
       }
     })
+    .then(response => response.json())  // Ensure JSON response is parsed
+    .then(data => {
+      console.log("Success:", data);
+      showPopup(data.message || "Your message has been sent successfully!");
+      form.reset();
+      submitBtn.disabled = true;
+    })
+    .catch(error => {
+      console.error("Fetch Error:", error);
+      showPopup("There was an error sending your message. Please try again.");
+      submitBtn.disabled = false;
+    });
     .then(response => response.json()) // Ensure JSON response is parsed
     .then(data => {
       console.log("Success:", data); // Debugging step
