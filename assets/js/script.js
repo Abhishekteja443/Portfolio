@@ -196,41 +196,44 @@ document.addEventListener('DOMContentLoaded', function() {
   form.addEventListener('submit', function(event) {
     event.preventDefault();
     
-    // Disable the submit button during submission
+    // Disable submit button during submission
     submitBtn.disabled = true;
-    
+
     // Collect form data
     const formData = {
       fullname: form.fullname.value.trim(),
       email: form.email.value.trim(),
       message: form.message.value.trim()
     };
-    
-    // Replace this URL with your Google Apps Script web app URL
-    const scriptURL = 'https://script.google.com/macros/s/AKfycby_wwJKF-rwdLZ7ii5uffq8ft66FRVM9yrN97pvBBA1u7foqngao_UliJxPr1JtLXoK/exec';
-    
-    // Send form data to Google Apps Script
+
+    console.log("Sending data:", formData); // Debugging step
+
+    // ✅ Replace this URL with your correct Google Apps Script URL
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbz94ktr7FHVb1ciUztuQ9zhjXjrUSxypk6rhi_RQprdfSNle8cBJyeUltGak2pFedpu/exec';
+
+    // Send data to Google Apps Script
     fetch(scriptURL, {
       method: 'POST',
+      mode: 'cors',  // ✅ Allow cross-origin requests
       body: JSON.stringify(formData),
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    .then(response => response.json())
+    .then(response => response.json()) // Ensure JSON response is parsed
     .then(data => {
-      // Show success message
+      console.log("Success:", data); // Debugging step
       showPopup(data.message || "Your message has been sent successfully!");
-      
-      // Reset the form
+
+      // Reset form after successful submission
       form.reset();
       submitBtn.disabled = true;
     })
     .catch(error => {
-      // Show error message
+      console.error("Fetch Error:", error); // Debugging step
       showPopup("There was an error sending your message. Please try again.");
-      console.error('Error:', error);
       submitBtn.disabled = false;
     });
   });
 });
+
