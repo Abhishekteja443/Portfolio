@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error("Fetch Error:", error);
       showPopup("There was an error sending your message. Please try again.");
       submitBtn.disabled = false;
-    });
+    })
     .then(response => response.json()) // Ensure JSON response is parsed
     .then(data => {
       console.log("Success:", data); // Debugging step
