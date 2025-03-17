@@ -288,8 +288,16 @@ function showPopup(message) {
 
 // Close the popup when the OK button is clicked
 popupOkButton.addEventListener('click', () => {
+  // Clear the form entries
+  f.reset();
+
+  // Hide the popup
   popup.style.display = 'none';
+
+  // Refresh the page
+  location.reload();
 });
+
 
 
 
