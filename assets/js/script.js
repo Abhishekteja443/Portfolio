@@ -158,94 +158,138 @@ for (let i = 0; i < navigationLinks.length; i++) {
   });
 }
 
+
+
+// Initialize the form
+// document.addEventListener('DOMContentLoaded', function() {
+//   const form = document.getElementById('contact-form');
+//   const statusMessage = document.getElementById('status-message');
+//   const popup = document.getElementById('popup');
+//   const popupMessage = document.getElementById('popup-message');
+//   const submitButton = document.getElementById('submit-btn');
+
+//   // Google Apps Script deployed as web app URL
+//   const scriptURL = 'https://script.google.com/macros/s/AKfycbyKb1OArIa8NonlAWKY0KEVR5MPVs8KqOPmhE_T2F9rSWLhYXeDUmQLZNw_b3UOVOg0/exec';
+
+//   form.addEventListener('submit', function(e) {
+//       e.preventDefault();
+      
+//       // Show loading state
+//       submitButton.disabled = true;
+//       submitButton.innerHTML = '<span>Sending...</span>';
+//       statusMessage.textContent = 'Submitting form...';
+//       statusMessage.className = 'status-message';
+      
+//       // Collect form data
+//       const formData = new FormData(form);
+      
+//       // Convert to URL-encoded string for JSONP approach
+//       const urlEncodedData = new URLSearchParams(formData).toString();
+      
+//       // Use JSONP approach to bypass CORS
+//       handleFormSubmit(urlEncodedData);
+//   });
+
+//   function handleFormSubmit(urlEncodedData) {
+//       // Create a script element for JSONP request
+//       const script = document.createElement('script');
+      
+//       // Create a unique callback function name
+//       const callbackName = 'jsonpCallback_' + Date.now();
+      
+//       // Define the callback function
+//       window[callbackName] = function(response) {
+//           // Remove the script element once the response is received
+//           document.body.removeChild(script);
+          
+//           // Handle the response
+//           if (response.result === 'success') {
+//               // Show success message
+//               statusMessage.textContent = 'Form submitted successfully!';
+//               statusMessage.className = 'status-message success';
+//               form.reset();
+//           } else {
+//               // Show error message
+//               statusMessage.textContent = 'Error submitting form. Please try again.';
+//               statusMessage.className = 'status-message error';
+//           }
+          
+//           // Re-enable the submit button
+//           submitButton.disabled = false;
+//           submitButton.innerHTML = '<ion-icon name="paper-plane"></ion-icon><span>Send Message</span>';
+          
+//           // Clean up the callback function
+//           delete window[callbackName];
+//       };
+      
+//       // Create the script URL with the JSONP callback parameter
+//       script.src = `${scriptURL}?${urlEncodedData}&callback=${callbackName}`;
+      
+//       // Handle script load errors
+//       script.onerror = function() {
+//           statusMessage.textContent = 'Network error. Please check your connection and try again.';
+//           statusMessage.className = 'status-message error';
+//           submitButton.disabled = false;
+//           submitButton.innerHTML = '<ion-icon name="paper-plane"></ion-icon><span>Send Message</span>';
+//           document.body.removeChild(script);
+//           delete window[callbackName];
+//       };
+      
+//       // Append the script to the document to initiate the request
+//       document.body.appendChild(script);
+//   }
+  
+//   // Popup functions
+//   window.showPopup = function(message) {
+//       popupMessage.textContent = message;
+//       popup.classList.add('active');
+//   };
+  
+//   window.closePopup = function() {
+//       popup.classList.remove('active');
+//   };
+// });
+
+const f = document.getElementById('contact-form');
+const popup = document.getElementById('popup');
+const popupMessage = document.getElementById('popup-message');
+const popupOkButton = document.getElementById('popup-ok');
+
+const scriptURL = 'https://script.google.com/macros/s/AKfycbwabrDHrYhiOW0dD8prSlry3No9Jv8PGSgX1BAFdGEpzpRb_TRqc8igXCuiuJhnlpJ4/exec';
+
+f.addEventListener('submit', e => {
+  e.preventDefault();
+
+  // Create FormData object from the form
+  const formData = new FormData(f);
+
+  // Add current date and time to the form data
+  const now = new Date();
+  formData.append('timestamp', now.toISOString());
+
+  fetch(scriptURL, { 
+    method: 'POST', 
+    body: formData 
+  })
+  .then(response => {
+    showPopup("Thank you! Form is submitted");
+  })
+  .catch(error => {
+    console.error('Error!', error.message);
+    showPopup("Error submitting form. Please try again.");
+  });
+});
+
+// Function to show the popup with a message
 function showPopup(message) {
-  const popup = document.getElementById('popup');
-  const popupMessage = document.getElementById('popup-message');
   popupMessage.textContent = message;
   popup.style.display = 'flex';
 }
 
-// Function to close the popup
-function closePopup() {
-  document.getElementById('popup').style.display = 'none';
-}
-
-// Initialize the form
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.getElementById('contact-form');
-  const submitBtn = document.querySelector('[data-form-btn]');
-  const formInputs = document.querySelectorAll('[data-form-input]');
-  
-  // Enable button when all fields have content
-  function validateForm() {
-    let isValid = true;
-    formInputs.forEach(input => {
-      if (!input.value.trim()) {
-        isValid = false;
-      }
-    });
-    submitBtn.disabled = !isValid;
-  }
-  
-  // Add event listeners to all inputs
-  formInputs.forEach(input => {
-    input.addEventListener('input', validateForm);
-  });
-  
-  // Form submission handler
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    
-    // Disable submit button during submission
-    submitBtn.disabled = true;
-
-    // Collect form data
-    const formData = {
-      fullname: form.fullname.value.trim(),
-      email: form.email.value.trim(),
-      message: form.message.value.trim()
-    };
-
-    console.log("Sending data:", formData); // Debugging step
-
-    // ✅ Replace this URL with your correct Google Apps Script URL
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbyKb1OArIa8NonlAWKY0KEVR5MPVs8KqOPmhE_T2F9rSWLhYXeDUmQLZNw_b3UOVOg0/exec';
-
-    // Send data to Google Apps Script
-    fetch(scriptURL, {
-      method: 'POST',
-      mode: 'cors',  // ✅ Allow cross-origin requests
-      body: JSON.stringify(formData),
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.json())  // Ensure JSON response is parsed
-    .then(data => {
-      console.log("Success:", data);
-      showPopup(data.message || "Your message has been sent successfully!");
-      form.reset();
-      submitBtn.disabled = true;
-    })
-    .catch(error => {
-      console.error("Fetch Error:", error);
-      showPopup("There was an error sending your message. Please try again.");
-      submitBtn.disabled = false;
-    })
-    .then(response => response.json()) // Ensure JSON response is parsed
-    .then(data => {
-      console.log("Success:", data); // Debugging step
-      showPopup(data.message || "Your message has been sent successfully!");
-
-      // Reset form after successful submission
-      form.reset();
-      submitBtn.disabled = true;
-    })
-    .catch(error => {
-      console.error("Fetch Error:", error); // Debugging step
-      showPopup("There was an error sending your message. Please try again.");
-      submitBtn.disabled = false;
-    });
-  });
+// Close the popup when the OK button is clicked
+popupOkButton.addEventListener('click', () => {
+  popup.style.display = 'none';
 });
+
+
 

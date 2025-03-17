@@ -240,7 +240,7 @@
                 <h4 class="h4 service-item-title">Data Science</h4>
 
                 <p class="service-item-text">
-                  Advanced data-driven solutions using machine learning, deep learning, and predictive analytics
+                  Building advanced data-driven models for predictive analytics using ML and DL.
                 </p>
               </div>
 
@@ -272,7 +272,7 @@
                 <h4 class="h4 service-item-title">AI/ML</h4>
 
                 <p class="service-item-text">
-                  Cutting-edge AI and machine learning models for intelligent automation and enhanced efficiency.
+                  Developing cutting-edge AI/ML models for automation and optimizing business processes.
                 </p>
               </div>
 
@@ -288,7 +288,7 @@
                 <h4 class="h4 service-item-title">Photography</h4>
 
                 <p class="service-item-text">
-                  I make high-quality photos of any category at a professional level.
+                  I create high-quality, professional-level photos in various genres such as portrait, landscape, or product photography
                 </p>
               </div>
 
@@ -795,7 +795,7 @@
 
           <h3 class="h3 form-title">Contact Form</h3>
 
-          <form id="contact-form" class="form" data-form>
+          <form id="contact-form" action="" name="contact-form" class="form" data-form>
 
             <div class="input-wrapper">
               <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
@@ -805,7 +805,7 @@
 
             <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
 
-            <button class="form-btn" type="submit" disabled data-form-btn>
+            <button class="form-btn" type="submit" value="Submit" id="submit" disabled data-form-btn>
               <ion-icon name="paper-plane"></ion-icon>
               <span>Send Message</span>
             </button>
@@ -814,10 +814,10 @@
 
           <div id="popup" class="popup">
             <div class="popup-content">
-              <p id="popup-message"></p>
-              <button onclick="closePopup()">OK</button>
+                <p id="popup-message" style="color: white;"></p>
+                <button id="popup-ok">OK</button>
             </div>
-          </div>
+        </div>
 
         </section>
 
